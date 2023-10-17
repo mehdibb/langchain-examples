@@ -31,23 +31,25 @@ const classificationChain = RunnableSequence.from([
   new StringOutputParser()
 ])
 
-void classificationChain.invoke({
-  question: artQuestion
-}).then((result) => {
-  console.log(`- ${artQuestion} >>>`, result)
-})
+async function runClassification (): Promise<void> {
+  await classificationChain.invoke({
+    question: artQuestion
+  }).then((result) => {
+    console.log(`- ${artQuestion} >>>`, result)
+  })
 
-void classificationChain.invoke({
-  question: historyQuestion
-}).then((result) => {
-  console.log(`- ${historyQuestion} >>>`, result)
-})
+  await classificationChain.invoke({
+    question: historyQuestion
+  }).then((result) => {
+    console.log(`- ${historyQuestion} >>>`, result)
+  })
 
-void classificationChain.invoke({
-  question: generalQuestion
-}).then((result) => {
-  console.log(`- ${generalQuestion} >>>`, result)
-})
+  await classificationChain.invoke({
+    question: generalQuestion
+  }).then((result) => {
+    console.log(`- ${generalQuestion} >>>`, result)
+  })
+}
 
 // Example 2: Branching with multiple chains
 
@@ -103,20 +105,30 @@ const fullChain = RunnableSequence.from([
   branch
 ])
 
-void fullChain.invoke({
-  question: artQuestion
-}).then((result) => {
-  console.log(`- ${artQuestion} >>>`, result.content)
-})
+async function runBranching (): Promise<void> {
+  await fullChain.invoke({
+    question: artQuestion
+  }).then((result) => {
+    console.log(`- ${artQuestion} >>>`, result.content)
+  })
 
-void fullChain.invoke({
-  question: historyQuestion
-}).then((result) => {
-  console.log(`- ${historyQuestion} >>>`, result.content)
-})
+  await fullChain.invoke({
+    question: historyQuestion
+  }).then((result) => {
+    console.log(`- ${historyQuestion} >>>`, result.content)
+  })
 
-void fullChain.invoke({
-  question: generalQuestion
-}).then((result) => {
-  console.log(`- ${generalQuestion} >>>`, result.content)
-})
+  await fullChain.invoke({
+    question: generalQuestion
+  }).then((result) => {
+    console.log(`- ${generalQuestion} >>>`, result.content)
+  })
+}
+
+async function main (): Promise<void> {
+  await runClassification()
+
+  await runBranching()
+}
+
+void main()
